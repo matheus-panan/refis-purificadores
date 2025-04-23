@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 # Carrega as duas abas do Excel
-df1 = pd.read_excel("resultado_final.xlsx", sheet_name="Sheet1")
+df1 = pd.read_excel("relatorio_backup.xlsx", sheet_name="Sheet1")
 df2 = pd.read_excel("reldiario.xlsx", sheet_name="ultima compra")
 
 # Junta os dois dataframes
@@ -24,4 +24,4 @@ df_ordenado = df_total.sort_values(["idclifor", "idsubproduto", "diff_dias"])
 df_resultado = df_ordenado.drop_duplicates(subset=["idclifor", "idsubproduto"], keep="first")
 
 # Salva o resultado
-df_resultado.to_excel("resultado_att.xlsx", index=False)
+df_resultado.to_excel("resultado_atualizado.xlsx", index=False)
