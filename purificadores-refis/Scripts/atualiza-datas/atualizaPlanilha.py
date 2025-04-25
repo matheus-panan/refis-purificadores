@@ -52,17 +52,41 @@ def main():
     data = values[1:]
 
     # Criar um DataFrame com os dados
-    df = pd.DataFrame(data, columns=headers)
+    df = pd.DataFrame(data)
 
     # Remover linhas completamente vazias
     df = df.dropna(how='all')
 
     # Renomear as colunas para corresponder ao padrão da imagem (se necessário)
-    df.columns = ['idclifor', 'nome', 'dtmovimento', 'idsubproduto', 'descsubproduto', 'qtd', 'valorliquido', 'status']
+    df.columns = ['idclifor', 'nome', 'dtmovimento', 'idsubproduto', 'descricaoproduto', 'qtdproduto', 'valtotliquido', 'status']
 
+    # Converter os tipos de dados
+    # idclifor: Inteiro
+    df['idclifor'] = pd.to_numeric(df['idclifor'], errors='coerce', downcast='integer')
+
+    # nome: String (já está como string, não precisa de conversão)
+
+    # dtmovimento: Data (formato DD/MM/YYYY)
+    df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], errors='coerce')
+    #pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
+    
+
+    # idsubproduto: Inteiro
+    df['idsubproduto'] = pd.to_numeric(df['idsubproduto'], errors='coerce', downcast='integer')
+
+    # descricaoproduto: String (já está como string)
+
+    # qtdproduto: Inteiro
+    df['qtdproduto'] = pd.to_numeric(df['qtdproduto'], errors='coerce', downcast='integer')
+
+    # valtotliquido: Float (considerando vírgula como separador decimal)
+    df['valtotliquido'] = df['valtotliquido'].str.replace(',', '.', regex=False)  # Substituir vírgula por ponto
+    df['valtotliquido'] = pd.to_numeric(df['valtotliquido'], errors='coerce')    
+    print(df.dtypes)
+    print(df['dtmovimento'])
     # Exportar para Excel
     #output_file = "teste.xlsx"
-    with pd.ExcelWriter('relatorio_backup.xlsx', engine='openpyxl', mode='a') as writer:
+    with pd.ExcelWriter('relatorio_backup.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
             df.to_excel(writer, sheet_name='backup', index=False)
     #print(f"Dados exportados com sucesso para {output_file}")
     

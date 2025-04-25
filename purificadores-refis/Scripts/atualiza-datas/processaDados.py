@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 # Carrega as duas abas do Excel
-df1 = pd.read_excel("relatorio_backup.xlsx", sheet_name="Sheet1")
+df1 = pd.read_excel("relatorio_backup.xlsx", sheet_name="backup")
 df2 = pd.read_excel("reldiario.xlsx", sheet_name="ultima compra")
 
 # Junta os dois dataframes
