@@ -67,7 +67,7 @@ def main():
     # nome: String (já está como string, não precisa de conversão)
 
     # dtmovimento: Data (formato DD/MM/YYYY)
-    df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], errors='coerce')
+    df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
     #pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
     
 
@@ -83,7 +83,7 @@ def main():
     df['valtotliquido'] = df['valtotliquido'].str.replace(',', '.', regex=False)  # Substituir vírgula por ponto
     df['valtotliquido'] = pd.to_numeric(df['valtotliquido'], errors='coerce')    
     print(df.dtypes)
-    print(df['dtmovimento'])
+    #print(df['dtmovimento'])
     # Exportar para Excel
     #output_file = "teste.xlsx"
     with pd.ExcelWriter('relatorio_backup.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
