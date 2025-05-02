@@ -54,7 +54,7 @@ def processar_relatorio_diario():
 
     return df_filtrado
 
-def main(): 
+def geraRelatorioDiario(): 
     # Etapa 1: Processar relatório diário
     df_ultima_compra = processar_relatorio_diario()
     
@@ -72,6 +72,3 @@ def main():
     #print(df_ultima_compra)
     
     print("Processo concluído com sucesso!")
-
-if __name__ == "__main__":
-    main()
