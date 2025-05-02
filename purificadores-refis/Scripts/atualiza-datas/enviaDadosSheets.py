@@ -79,7 +79,3 @@ def excel_to_google_sheets():
     except HttpError as err:
         print(err)
         return None
-    
-if __name__ == "__main__":
-    # Chamar a função para enviar os dados
-    excel_to_google_sheets()
