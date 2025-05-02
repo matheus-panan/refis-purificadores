@@ -6,14 +6,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = "1DQAUJlgrTerE_zJ9e7e1boT32n18ZYdZaqKfuC0ZUFI"
-SAMPLE_RANGE_NAME = "Última Compra!A:H"
-
-def main():
+def autentica():
+  SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+  SAMPLE_SPREADSHEET_ID = "1DQAUJlgrTerE_zJ9e7e1boT32n18ZYdZaqKfuC0ZUFI"
+  SAMPLE_RANGE_NAME = "Última Compra!A:H"
   
   creds = None
   
@@ -59,17 +55,11 @@ def main():
 
     # Renomear as colunas para corresponder ao padrão da imagem (se necessário)
     df.columns = ['idclifor', 'nome', 'dtmovimento', 'idsubproduto', 'descricaoproduto', 'qtdproduto', 'valtotliquido', 'status']
-
-    # Converter os tipos de dados
-    # idclifor: Inteiro
     df['idclifor'] = pd.to_numeric(df['idclifor'], errors='coerce', downcast='integer')
-
-    # nome: String (já está como string, não precisa de conversão)
 
     # dtmovimento: Data (formato DD/MM/YYYY)
     df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
     #pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
-    
 
     # idsubproduto: Inteiro
     df['idsubproduto'] = pd.to_numeric(df['idsubproduto'], errors='coerce', downcast='integer')
@@ -79,19 +69,8 @@ def main():
     # qtdproduto: Inteiro
     df['qtdproduto'] = pd.to_numeric(df['qtdproduto'], errors='coerce', downcast='integer')
 
-    # valtotliquido: Float (considerando vírgula como separador decimal)
-    df['valtotliquido'] = df['valtotliquido'].str.replace(',', '.', regex=False)  # Substituir vírgula por ponto
-    df['valtotliquido'] = pd.to_numeric(df['valtotliquido'], errors='coerce')    
-    print(df.dtypes)
-    #print(df['dtmovimento'])
-    # Exportar para Excel
-    #output_file = "teste.xlsx"
     with pd.ExcelWriter('relatorio_backup.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
             df.to_excel(writer, sheet_name='backup', index=False)
-    #print(f"Dados exportados com sucesso para {output_file}")
     
   except HttpError as err:
-    print(err)
-
-if __name__ == "__main__":
-  main()
+    print("erro:" + err)
