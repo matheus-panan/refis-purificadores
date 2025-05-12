@@ -31,68 +31,37 @@ def gravaHistorico():
       token.write(creds.to_json())
 
   try:
-    # Conectar à API do Google Sheets
     service = build("sheets", "v4", credentials=creds)
     sheet = service.spreadsheets()
 
-    # Ler os valores da planilha
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID1, range=SAMPLE_RANGE_NAME1).execute()  
-    # Extrair os dados da chave 'values'
     values = result.get('values', [])
     if not values:
         print("Nenhum dado encontrado na planilha.")
         return
-    # A primeira linha contém os cabeçalhos
-    #headers = values[0]
-        # As demais linhas são os dados (a partir da segunda linha)
+    
     data = values[1:]
-
-    # Criar um DataFrame com os dados
     df = pd.DataFrame(data)
-
-    # Remover linhas completamente vazias
     df = df.dropna(how='all')
-
-    # Renomear as colunas para corresponder ao padrão da imagem (se necessário)
-    df.columns = ['idclifor', 'nome', 'tentativa1', 'tentativa2', 'dtmovimento']
+    df.columns = ['idclifor', 'nome', 'tentativa1', 'tentativa2', 'data']
     df['idclifor'] = pd.to_numeric(df['idclifor'], errors='coerce', downcast='integer')
-
-    # dtmovimento: Data (formato DD/MM/YYYY)
-    #df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
-    #pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
-    #df.to_excel("historicos.xlsx", index=False)
 
     with pd.ExcelWriter('historicos.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
             df.to_excel(writer, sheet_name='Gabrielly', index=False)
 
-
-    # Ler os valores da planilha
     result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID2, range=SAMPLE_RANGE_NAME2).execute()  
-    # Extrair os dados da chave 'values'
+
     values = result.get('values', [])
     if not values:
         print("Nenhum dado encontrado na planilha.")
         return
-    # A primeira linha contém os cabeçalhos
-    #headers = values[0]
-        # As demais linhas são os dados (a partir da segunda linha)
+    
     data = values[1:]
-
-    # Criar um DataFrame com os dados
     df = pd.DataFrame(data)
-
-    # Remover linhas completamente vazias
     df = df.dropna(how='all')
-
-    # Renomear as colunas para corresponder ao padrão da imagem (se necessário)
-    df.columns = ['idclifor', 'nome', 'tentativa1', 'tentativa2', 'dtmovimento']
+    df.columns = ['idclifor', 'nome', 'tentativa1', 'tentativa2', 'data']
     df['idclifor'] = pd.to_numeric(df['idclifor'], errors='coerce', downcast='integer')
 
-    # dtmovimento: Data (formato DD/MM/YYYY)
-    #df['dtmovimento'] = pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
-    #pd.to_datetime(df['dtmovimento'], format='%d/%m/%Y', errors='coerce')
-    #df.to_excel("historicos.xlsx", index=False)
-    
     with pd.ExcelWriter('historicos.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
             df.to_excel(writer, sheet_name='Maria', index=False)
 
