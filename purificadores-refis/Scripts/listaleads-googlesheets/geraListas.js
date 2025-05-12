@@ -15,7 +15,7 @@ function gerarListasClientes() {
   limpaPlanilhas(listaMariaSheet, listaGabriellySheet)
   var dataUltimaCompra = obterDataLimite()
   var data = obterDadosPlanilha(dadosSheet)
-  var clientesValidos = embaralharArray(criarListaClientesValidos(data, dataUltimaCompra));
+  var clientesValidos = embaralharArray(criarListaClientesValidos(data, dataUltimaCompra, dadosSheet));
   
   // Divide os clientes válidos entre as listas de Maria e Gabrielly
   var listaMaria = clientesValidos.slice(0, 40); // Pega os primeiros 40

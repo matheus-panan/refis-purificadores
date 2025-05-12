@@ -27,7 +27,7 @@ function obterDataLimite(){
   return dataUltimaCompra
 }
 
-function criarListaClientesValidos(data, dataUltimaCompra){
+function criarListaClientesValidos(data, dataUltimaCompra, dadosSheet){
   var clientesValidos = []
   for (let i = 1; i < data.length; i++) {
     var cliente = data[i][0]; // Coluna A (Cliente)
@@ -38,6 +38,12 @@ function criarListaClientesValidos(data, dataUltimaCompra){
      mas já foi verificado que não é possível realizar a troca do refil por qualquer motivo que seja)*/
     if (dataCompra < dataUltimaCompra && status !== "V")
       clientesValidos.push(cliente); // Adiciona cliente à lista de válidos
+    if (dataCompra < dataUltimaCompra) {
+      if (status === "V") 
+        dadosSheet.getRange(i + 1, 8).setValue(""); // Coluna H (Status)
+      else
+        clientesValidos.push(cliente); // Adiciona cliente à lista de válidos
+    }
     /*if(clientesValidos.length == 80)
       break*/
   }
@@ -56,7 +62,7 @@ function processarListas(listaGabrielly, listaMaria, data, dadosSheet, listaGabr
     for (let j = 0; j < lista.length; j++) {
       const index = data.findIndex(row => row[0] === lista[j]);
       if (index !== -1) {
-        dadosSheet.getRange(index + 1, 8).setValue("V"); // Coluna H
+        dadosSheet.getRange(index + 1, 8); // Coluna H
       }
       sheet.getRange(j + 2, 1).setValue(lista[j]);
     }

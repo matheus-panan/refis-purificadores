@@ -30,18 +30,24 @@ def excel_to_google_sheets():
     sheet_name = "Última Compra"
     spreadsheet_id = "1DQAUJlgrTerE_zJ9e7e1boT32n18ZYdZaqKfuC0ZUFI"
     range_name = f"{sheet_name}!A1"
+    # Ler o arquivo Excel
     df = pd.read_excel(excel_file)
 
+    # Tratar colunas datetime para string
     for col in df.select_dtypes(include=["datetime", "datetimetz"]):
         if col != "dtmovimento":
             df[col] = df[col].astype(str)
 
+    # Substituir NaNs por string vazia, exceto na coluna 'valtotliquido'
     for col in df.columns:
+        #if col != "valtotliquido":
         df[col] = df[col].fillna("")
-
+    # Converter todas as colunas (exceto 'valtotliquido') para string
     for col in df.columns:
         if col != "valtotliquido" and "dtmovimento"and "qtdproduto"and "idsubproduto"and "idclifor":
             df[col] = df[col].astype(str)
+    
+    #df["valtotliquido"] = pd.to_numeric(df["valtotliquido"], errors="coerce").fillna(0)
         
     if('diff_dias' in df.columns):
         df = df.drop(columns=["diff_dias"])
