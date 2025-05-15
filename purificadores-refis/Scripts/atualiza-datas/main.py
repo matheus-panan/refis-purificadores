@@ -10,8 +10,9 @@ def main():
     #print("Autenticação feita com sucesso e relatorio_backup criado!")
     #gravaHistorico()
     geraRelatorioDiario()
-    hoje = datetime.today().date()
-    hoje = (str(hoje))
+
+    #hoje = datetime.today().date()
+    #hoje = (str(hoje))
     #print("Filtro do relatorio do dia "+ hoje +" feito!")
     geraRelatorioAtualizado()
     #print("Base de dados do dia " + hoje + " está atualizado no excel!")
