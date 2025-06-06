@@ -13,23 +13,11 @@
 function gerarListasClientes() {
   const {dadosSheet, listaMariaSheet, listaGabriellySheet} = inicializarPlanilhas()
   limpaPlanilhas(listaMariaSheet, listaGabriellySheet)
-  var dataUltimaCompra = obterDataLimite()
   var data = obterDadosPlanilha(dadosSheet)
-  var clientesValidos = embaralharArray(criarListaClientesValidos(data, dataUltimaCompra, dadosSheet));
+  var clientesValidos = embaralharArray(criarListaClientesValidos(data));
   
   // Divide os clientes válidos entre as listas de Maria e Gabrielly
   var listaMaria = clientesValidos.slice(0, 40); // Pega os primeiros 40
   var listaGabrielly = clientesValidos.slice(40, 80); // Pega os próximos 40
   processarListas(listaGabrielly, listaMaria, data, dadosSheet, listaGabriellySheet, listaMariaSheet)
 }
-
-/*function mensagemUsuario() {
-  // Obter a data atual formatada
-  var dataAtual = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy");
-  
-  // Criar a mensagem com a data
-  var mensagem = "Lista do dia: " + dataAtual + " foi gerada!";
-  
-  // Exibir o popup
-  //SpreadsheetApp.getUi().alert(mensagem);
-}*/

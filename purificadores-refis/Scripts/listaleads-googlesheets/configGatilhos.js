@@ -60,30 +60,20 @@ function criarAcionadorParaCopia(){
   Logger.log('Acionadores criados com sucesso!');
 }
 
-function criarAcionadorHistorico(){
+function criarAcionadorAtualizarStatusLigacao(){
   // Remover quaisquer acionadores existentes para evitar duplicação
   var acionadores = ScriptApp.getProjectTriggers();
-  for (var i = 0; i < acionadores.length; i++) {
-    if (acionadores[i].getHandlerFunction() === 'copiarParaListaMaria')
+  for (var i = 0; i < acionadores.length; i++)
+    if (acionadores[i].getHandlerFunction() === 'atualizarBaseDeDadosComHistorico')
       ScriptApp.deleteTrigger(acionadores[i]);
-    else if(acionadores[i].getHandlerFunction()=== 'copiarParaListaGabrielly')
-      ScriptApp.deleteTrigger(acionadores[i]);
-  }
 
-  // Cria novos acionadores diários às 20:00
-  ScriptApp.newTrigger('historicoGabrielly')
+  // Cria novos acionadores diários às 22:00
+  ScriptApp.newTrigger('atualizarBaseDeDadosComHistorico')
     .timeBased()
-    .atHour(20)
+    .atHour(22)
     .nearMinute(00)
     .everyDays(1)
     .create();
-
-  ScriptApp.newTrigger('historicoMaria')
-    .timeBased()
-    .atHour(20)
-    .nearMinute(00)
-    .everyDays(1)
-    .create();  
     
   Logger.log('Acionadores criados com sucesso!');
 }

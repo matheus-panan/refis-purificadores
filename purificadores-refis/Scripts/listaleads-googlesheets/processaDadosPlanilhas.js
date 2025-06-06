@@ -1,7 +1,7 @@
 function inicializarPlanilhas() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   return {
-    dadosSheet: ss.getSheetByName("Última Compra"),
+    dadosSheet: ss.getSheetByName("Base de dados BI"),
     listaMariaSheet: ss.getSheetByName("Lista Maria"),
     listaGabriellySheet: ss.getSheetByName("Lista Gabrielly")
   };
@@ -27,24 +27,29 @@ function obterDataLimite(){
   return dataUltimaCompra
 }
 
-function criarListaClientesValidos(data, dataUltimaCompra, dadosSheet){
+function criarListaClientesValidos(data/*, dataUltimaCompra, dadosSheet*/){
   var clientesValidos = []
-  for (let i = 1; i < data.length; i++) {
-    var cliente = data[i][0]; // Coluna A (Cliente)
-    var status = data[i][7]; // Coluna H (Status)
-    var dataCompra = new Date(data[i][2]); // Coluna C (Data da Última Compra)
+  for (let i = 0; i < data.length; i++) {
+    //var cliente = data[i][0]; // Coluna A (Cliente)
+    var status = data[i][6]; // Coluna H (Status)
+    //var dataCompra = new Date(data[i][2]); // Coluna C (Data da Última Compra)
     
     /* Verifica se a compra é anterior a 9 meses e se o status não é 'V' (Isso existe para casos em que o cliente nao comprou
      mas já foi verificado que não é possível realizar a troca do refil por qualquer motivo que seja)*/
-    if (dataCompra < dataUltimaCompra && status !== "V")
-      clientesValidos.push(cliente); // Adiciona cliente à lista de válidos
-    if (dataCompra < dataUltimaCompra) {
-      if (status === "V") 
-        dadosSheet.getRange(i + 1, 8).setValue(""); // Coluna H (Status)
+    if (status === "Ligar")
+      clientesValidos.push([
+          data[i][0], // idclifor (Coluna A)
+          data[i][1], // nome (Coluna B)
+          data[i][2], // data da última compra (Coluna C)
+          data[i][5]  // descrição do produto (Coluna D)
+        ]); // Adiciona cliente à lista de válidos
+    /*if (dataCompra < dataUltimaCompra) {
+      if (status === "Não ligar") 
+        dadosSheet.getRange(i + 1, 8).setValue("Ligar"); // Coluna H (Status)
       else
         clientesValidos.push(cliente); // Adiciona cliente à lista de válidos
     }
-    /*if(clientesValidos.length == 80)
+    if(clientesValidos.length == 80)
       break*/
   }
   return clientesValidos
@@ -62,7 +67,7 @@ function processarListas(listaGabrielly, listaMaria, data, dadosSheet, listaGabr
     for (let j = 0; j < lista.length; j++) {
       const index = data.findIndex(row => row[0] === lista[j]);
       if (index !== -1) {
-        dadosSheet.getRange(index + 1, 8); // Coluna H
+        dadosSheet.getRange(index + 1, 7); // Coluna H
       }
       sheet.getRange(j + 2, 1).setValue(lista[j]);
     }
