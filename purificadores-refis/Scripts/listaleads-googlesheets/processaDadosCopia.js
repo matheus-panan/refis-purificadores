@@ -7,7 +7,7 @@ function copiarParaLista(nomeLista, urlDestino) {
     // 1. Acessar a planilha e aba de origem
     var origem = SpreadsheetApp.getActiveSpreadsheet();
     var sheetOrigem = origem.getSheetByName(nomeLista);
-    
+  
     // 2. Acessar a planilha de destino
     var destino = SpreadsheetApp.openByUrl(urlDestino);
     

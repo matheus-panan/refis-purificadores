@@ -1,4 +1,4 @@
-/*function calculateScores() {
+function calculateScores() {
   var sheet = SpreadsheetApp.getActiveSheet();
   var lastRow = sheet.getLastRow();
   var data = sheet.getDataRange().getValues();
@@ -8,6 +8,7 @@
   var clientesMedios = []
   var clientesRuins = []
   //var base_repetidos = calculaRepetidos(ids)
+  var backgrounds = [];
 
   /* 3. Verifica a quantidade de repetições de idclifor presentes na base de dados e atribui valores ao score
         de acordo com a quantidade de repetições
@@ -25,9 +26,10 @@
       score += 0;
     idToScore[id] = score; // Map the ID to its calculated score
   }
-  var idToScore = {};
+  var idToScore = {};*/
 
-  
+  var scores = [];
+  var backgrounds = [];
   // Loop principal - agora usando o score base das repetições
   for (var i = 1; i < lastRow; i++) {
     var idclifor = data[i][0]
@@ -64,15 +66,25 @@
     // Normalizar score (0 a 100)
     score = Math.max(0, Math.min(100, score));
 
+    var bgColor;
     // Classificação
-    if (score > 35) clientesBons.push(idclifor);
-    else if (score > 5 && score <=35) clientesMedios.push(idclifor);
-    else clientesRuins.push(idclifor);
+    if (score > 35) {clientesBons.push(idclifor);bgColor = "#b7e1cd";}
+    else if (score > 5 && score <=35) {clientesMedios.push(idclifor); bgColor = "#fff2cc";}
+    else {clientesRuins.push(idclifor);bgColor = "#f4c7c3";}
 
-    sheet.getRange(i + 1, 12).setValue(score);
+    scores.push([score]);
+    backgrounds.push([bgColor]);
+    //sheet.getRange(i + 1, 12).setValue(score);
   }
-  console.log("Clientes bons: "+ clientesBons.length +"\nClientes médios: "+ clientesMedios.length +"\nClientes Ruins: "+ clientesRuins.length)
-}
+  if (scores.length > 0) {
+    var range = sheet.getRange(2, 12, scores.length, 1);
+    var range2 = sheet.getRange(2, 1, scores.length, 1);
+    range.setValues(scores);
+    range2.setBackgrounds(backgrounds);
+  }
+  //return clientesBons
+  //return separaClientes(clientesBons, clientesMedios, clientesRuins)
+}/*
 
 function calculaRepetidos(ids) {
   // Step 1: Count occurrences of each ID
@@ -93,7 +105,7 @@ function calculaRepetidos(ids) {
   if (resultados.length === 1) // Only header, no valid IDs
     return;
   return resultados;
-}*/
+}
 function calculateScores() {
   var sheet = SpreadsheetApp.getActiveSheet();
   var lastRow = sheet.getLastRow();
@@ -167,4 +179,6 @@ function calculateScores() {
   }
   
   console.log("Clientes bons: "+ clientesBons.length +"\nClientes médios: "+ clientesMedios.length +"\nClientes Ruins: "+ clientesRuins.length);
-}
+
+  return clientesBons;
+}*/
