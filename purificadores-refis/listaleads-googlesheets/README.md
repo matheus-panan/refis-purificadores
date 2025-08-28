@@ -1,5 +1,5 @@
 # Sistema de Gestão de Leads para Refis e Purificadores
-## 📋 Visão Geral Completa
+## 📋 Documentação do código
 
 Este é um sistema automatizado desenvolvido em Google Apps Script que funciona como um **assistente inteligente** para vendas de refis e purificadores de água. Imagine ter um funcionário que trabalha 24 horas por dia, organizando clientes, calculando quais têm maior chance de comprar e distribuindo o trabalho de forma equilibrada entre as vendedoras.
 
@@ -1223,3 +1223,4 @@ function analiseMachineLearning() {
 - **Dados**: Export mensal das planilhas
 - **Configurações**: Documentar todas as customizações
 - **Histórico**: Manter arquivos de pelo menos 1 ano
+
